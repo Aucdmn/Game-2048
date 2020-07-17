@@ -93,10 +93,37 @@ function GenerateOneNumber() {
     // console.log(random_x, random_y, random_num);
     ShowNumberWithAnimation(random_x, random_y, random_num);
     
-        
-    
-
     return true;  
-
 }
+
+$(document).keydown(function(e) {
+    switch(e.keyCode) {
+        case 37: // left
+            if(MoveLeft()) {
+                GenerateOneNumber();
+                IsGameOver();
+            }
+            break;
+        case 38: // up
+            if(MoveUp()) {
+                GenerateOneNumber();
+                IsGameOver();
+            }
+            break;
+        case 39: // right
+            if(MoveRight()) {
+                GenerateOneNumber();
+                IsGameOver();
+            }
+            break;
+        case 38: // down
+            if(MoveDown()) {
+                GenerateOneNumber();
+                IsGameOver();
+            }
+            break;
+        default: 
+            break;
+    }
+})
 
