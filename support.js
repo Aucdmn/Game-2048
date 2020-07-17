@@ -43,3 +43,24 @@ function NoSpace(board) {
 
     return true;
 }
+
+function CanMoveLeft(board) {
+    for(let i = 0; i < 4; i++){
+        for(let j = 0; j < 4; j++){
+            if(board[i][j] != 0){
+                if(board[i][j-1] === board[i][j] || board[i][j-1] === 0)
+                    return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function NoBlockHorizontal(row, col1, col2, board) {
+    for(let i = col1 + 1; i < col2; i++){
+        if(board[row][i] !== 0) return false;
+    }
+
+    return true;
+}

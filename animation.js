@@ -14,3 +14,11 @@ function ShowNumberWithAnimation(i, j, random_num) {
     }, 50);
     
 }
+
+function ShowMoveAnimation(from_x, from_y, to_x, to_y) {
+    let numberCell = $('number-cell-' + from_x + '-' + from_y);
+    numberCell.animate({
+        top: getPosTop(to_x, to_y),
+        left: getPosLeft(to_x, to_y)
+    }, 200);
+}
