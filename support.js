@@ -47,13 +47,13 @@ function NoSpace(board) {
 function CanMoveLeft(board) {
     for(let i = 0; i < 4; i++){
         for(let j = 0; j < 4; j++){
-            if(board[i][j] != 0){
+            if(board[i][j] !== 0){
                 if(board[i][j-1] === board[i][j] || board[i][j-1] === 0)
                     return true;
             }
         }
     }
-
+    // console.log('can`t move left');
     return false;
 }
 

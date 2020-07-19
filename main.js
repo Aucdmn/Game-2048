@@ -79,6 +79,7 @@ function GenerateOneNumber() {
     // 随机一个位置
     let random_x = parseInt(Math.floor(Math.random() * 4));
     let random_y = parseInt(Math.floor(Math.random() * 4));
+
     while(1) {
         if(board[random_x][random_y] === 0)
             break;
@@ -94,43 +95,6 @@ function GenerateOneNumber() {
     ShowNumberWithAnimation(random_x, random_y, random_num);
     
     return true;  
-}
-
-function MoveLeft() {
-    if(!CanMoveLeft(board))  return false;
-
-    // the real MoveLeft()
-    for(let i = 0; i < 4; i++) {
-        for(let j = 0; j < 4; j++) {
-            if(board[i][j] !== 0) {
-                for(let k = 0; k < j; k++){
-                    if(board[i][k] === 0 && NoBlockHorizontal(i, k, j, board)){
-                        // move
-                        ShowMoveAnimation(i, j, i, k);
-                        board[i][k] = board[i][j];
-                        board[i][j] = 0;
-
-                        continue;
-                    }
-                    else if(board[i][k] === board[i][j] && NoBlockHorizontal(i, k, j, board)){
-                        // move
-                        ShowMoveAnimation(i, j, i, k);
-                        // add
-                        board[i][k] += board[i][j];
-                        board[i][j] = 0;
-
-                        continue;
-                    }
-                }
-            }
-        }
-    }
-
-    updateBoardView();
-}
-
-function IsGameOver() {
-
 }
 
 $(document).keydown(function(e) {
@@ -163,4 +127,45 @@ $(document).keydown(function(e) {
             break;
     }
 })
+
+
+function MoveLeft() {
+    if(!CanMoveLeft(board))  return false;
+
+    // the real MoveLeft()
+    for(let i = 0; i < 4; i++) 
+        for(let j = 0; j < 4; j++) {
+            if(board[i][j] !== 0) {
+                for(let k = 0; k < j; k++){
+                    if(board[i][k] === 0 && NoBlockHorizontal(i, k, j, board)){
+                        // move
+                        ShowMoveAnimation(i, j, i, k);
+                        board[i][k] = board[i][j];
+                        board[i][j] = 0;
+
+                        continue;
+                    }
+                    else if(board[i][k] === board[i][j] && NoBlockHorizontal(i, k, j, board)){
+                        // move
+                        ShowMoveAnimation(i, j, i, k);
+                        // add
+                        board[i][k] += board[i][j];
+                        board[i][j] = 0;
+
+                        continue;
+                    }
+                }
+            }
+        }
+
+
+    setTimeout("updateBoardView()", 200); 
+    // updateBoardView();
+    return true;
+}
+
+function IsGameOver() {
+
+}
+
 
