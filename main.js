@@ -1,21 +1,21 @@
 let score = 0;
 let board = new Array();
 
-window.onload = prepareLinks;
-function prepareLinks() {
-    let links = document.querySelectorAll('a');
-    for(let i = 0; i < links.length; i++){
-        if(links[i].getAttribute('id') === 'newGameButton') {
-            links[i].onclick = function() {
-                NewGame();
-            }
-        }
-    }
-}
+// window.onload = prepareLinks;
+// function prepareLinks() {
+//     let links = document.querySelectorAll('a');
+//     for(let i = 0; i < links.length; i++){
+//         if(links[i].getAttribute('id') === 'newGameButton') {
+//             links[i].onclick = function() {
+//                 NewGame();
+//             }
+//         }
+//     }
+// }
 
-// $(document).ready(function() {
-//     NewGame();
-// });
+$(document).ready(function() {
+    NewGame();
+});
 
 function NewGame() {
     // 初始化界面
@@ -23,7 +23,7 @@ function NewGame() {
     // 随机生成两个数字
     GenerateOneNumber();
     GenerateOneNumber();
-};
+}
 
 
 function Init() {
@@ -47,12 +47,12 @@ function Init() {
 
 function updateBoardView() {
       $(".number-cell").remove();
-      for(let i = 0; i < 4; i++){
+      for(let i = 0; i < 4; i++)
           for(let j = 0; j < 4; j++){
               $("#grid-container").append(' <div class="number-cell" id="number-cell-' + i + '-' + j +'"></div> ');
               let theNumberCell = $('#number-cell-' + i + '-' + j);
 
-              if(board[i][j] === 0){
+              if(board[i][j] == 0){
                   theNumberCell.css('width', '0px');
                   theNumberCell.css('height', '0px');
                   theNumberCell.css('top', getPosTop(i, j) + 50);
@@ -67,8 +67,7 @@ function updateBoardView() {
                   theNumberCell.css('color', getNumberColor(board[i][j]));
                   theNumberCell.text(board[i][j]);
               }
-          }
-      }
+          }   
 }
 
 function GenerateOneNumber() {
@@ -80,12 +79,13 @@ function GenerateOneNumber() {
     let random_x = parseInt(Math.floor(Math.random() * 4));
     let random_y = parseInt(Math.floor(Math.random() * 4));
 
-    while(1) {
-        if(board[random_x][random_y] === 0)
+    while(true) {
+        if(board[random_x][random_y] == 0)
             break;
         random_x = parseInt(Math.floor(Math.random() * 4));
         random_y = parseInt(Math.floor(Math.random() * 4));
     }
+
     // 随机一个数字
     let random_num = Math.random() > 0.5 ? 2 : 4;
 
@@ -97,8 +97,8 @@ function GenerateOneNumber() {
     return true;  
 }
 
-$(document).keydown(function(e) {
-    switch(e.keyCode) {
+$(document).keydown(function(event) {
+    switch(event.keyCode) {
         case 37: // left
             if(MoveLeft()) {
                 GenerateOneNumber();
@@ -126,46 +126,91 @@ $(document).keydown(function(e) {
         default: 
             break;
     }
-})
+});
+
+function IsGameOver() {
+
+}
 
 
 function MoveLeft() {
-    if(!CanMoveLeft(board))  return false;
+    if(!CanMoveLeft(board))  
+        return false;
 
     // the real MoveLeft()
     for(let i = 0; i < 4; i++) 
-        for(let j = 0; j < 4; j++) {
-            if(board[i][j] !== 0) {
+        for(let j = 1; j < 4; j++) {
+            if(board[i][j] != 0) {
+
                 for(let k = 0; k < j; k++){
-                    if(board[i][k] === 0 && NoBlockHorizontal(i, k, j, board)){
+                    if(board[i][k] == 0 && NoBlockHorizontal(i, k, j, board)){
                         // move
                         ShowMoveAnimation(i, j, i, k);
                         board[i][k] = board[i][j];
                         board[i][j] = 0;
 
+                        console.log('可以移动到'+ i + ' '+ k +'位置');
                         continue;
                     }
-                    else if(board[i][k] === board[i][j] && NoBlockHorizontal(i, k, j, board)){
+                    else if(board[i][k] == board[i][j] && NoBlockHorizontal(i, k, j, board)){
                         // move
                         ShowMoveAnimation(i, j, i, k);
                         // add
                         board[i][k] += board[i][j];
                         board[i][j] = 0;
 
+                        console.log('k位置与j位置值相等');
                         continue;
                     }
+                    // else if(board[i][k] != 0 && board[i][k] != board[i][j]) {
+                    //     // 什么都不做
+                    //     console.log('无法移动到' + k +'位置');
+                    //     continue;
+                    // }
                 }
             }
         }
-
 
     setTimeout("updateBoardView()", 200); 
     // updateBoardView();
     return true;
 }
 
-function IsGameOver() {
+// 来自答案源代码
 
-}
+// function MoveLeft(){
+
+//     if( !CanMoveLeft( board ) )
+//         return false;
+
+//     //moveLeft
+//     for( var i = 0 ; i < 4 ; i ++ )
+//         for( var j = 1 ; j < 4 ; j ++ ){
+//             if( board[i][j] != 0 ){
+
+//                 for( var k = 0 ; k < j ; k ++ ){
+//                     if( board[i][k] == 0 && NoBlockHorizontal( i , k , j , board ) ){
+//                         //move
+//                         ShowMoveAnimation( i , j , i , k );
+//                         board[i][k] = board[i][j];
+//                         board[i][j] = 0;
+//                         continue;
+//                     }
+//                     else if( board[i][k] == board[i][j] && NoBlockHorizontal( i , k , j , board ) ){
+//                         //move
+//                         ShowMoveAnimation( i , j , i , k );
+//                         //add
+//                         board[i][k] += board[i][j];
+//                         board[i][j] = 0;
+
+//                         continue;
+//                     }
+//                 }
+//             }
+//         }
+
+//     setTimeout("updateBoardView()",200);
+//     return true;
+// }
 
 

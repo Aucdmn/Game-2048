@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.0/jquery.min.js"></script> -->
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+    <script src="support.js"></script>
+    <script src="animation.js"></script>
+    <script src="main.js"></script>
+    
     <title>2048</title>
 </head>
 <body>
     <header>
         <h1>2048</h1>
-        <a href="#" id="newGameButton">New Game</a>
-        <p>Score:<span>0</span></p>
+        <a href="javascript:NewGame();" id="newGameButton">New Game</a>
+        <p>Score : <span>0</span></p>
     </header>
 
     <div id="grid-container">
@@ -36,10 +42,7 @@
 
     </div>
 
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="support.js"></script>
-    <script src="animation.js"></script>
-    <script src="main.js"></script>
+    
     
     
 </body>

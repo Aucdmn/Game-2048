@@ -35,32 +35,42 @@ function getNumberColor(number) {
 }
 
 function NoSpace(board) {
-    for(let i = 0; i < 4; i++){
-        for(let j = 0; j < 4; j++){
-            if(board[i][j] === 0)  return false;
-        }
-    }
+
+    for(let i = 0; i < 4; i++)
+        for(let j = 0; j < 4; j++)
+            if(board[i][j] == 0)  return false;
 
     return true;
 }
 
 function CanMoveLeft(board) {
-    for(let i = 0; i < 4; i++){
-        for(let j = 0; j < 4; j++){
-            if(board[i][j] !== 0){
-                if(board[i][j-1] === board[i][j] || board[i][j-1] === 0)
+
+    for(let i = 0; i < 4; i++)
+        for(let j = 1; j < 4; j++)
+            if(board[i][j] != 0)
+                if( board[i][j-1] == 0 || board[i][j-1] == board[i][j] ){
+                    console.log("going to move left");
                     return true;
-            }
-        }
-    }
-    // console.log('can`t move left');
+                }
+                   
+    console.log('can`t move left');
     return false;
 }
+  // 来自答案源代码：
+//   function CanMoveLeft( board ){
+
+//     for( var i = 0 ; i < 4 ; i ++ )
+//         for( var j = 1; j < 4 ; j ++ )
+//             if( board[i][j] != 0 )
+//                 if( board[i][j-1] == 0 || board[i][j-1] == board[i][j] )
+//                     return true;
+
+//     return false;
+// }
 
 function NoBlockHorizontal(row, col1, col2, board) {
-    for(let i = col1 + 1; i < col2; i++){
-        if(board[row][i] !== 0) return false;
-    }
-
+    for(let i = col1 + 1; i < col2; i++)
+        if(board[row][i] != 0) 
+            return false;
     return true;
 }
