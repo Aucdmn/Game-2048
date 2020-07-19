@@ -138,40 +138,39 @@ function MoveLeft() {
         return false;
 
     // the real MoveLeft()
-    for(let i = 0; i < 4; i++) 
+    for(let i = 0; i < 4; i++) {
         for(let j = 1; j < 4; j++) {
             if(board[i][j] != 0) {
-
+                console.log('此时找到的位置为' + i + ' ' + j);
                 for(let k = 0; k < j; k++){
-                    if(board[i][k] == 0 && NoBlockHorizontal(i, k, j, board)){
+                    if(board[i][k] == 0 && NoBlockHorizontal(i, k, j, board)) {
                         // move
                         ShowMoveAnimation(i, j, i, k);
                         board[i][k] = board[i][j];
                         board[i][j] = 0;
 
-                        console.log('可以移动到'+ i + ' '+ k +'位置');
+                        console.log('将'+ i + ' ' + j +'移动到' + i + ' ' + k);
+                        console.log( '此时(i,k)的值为：' + i + ' ' + k );
                         continue;
                     }
                     else if(board[i][k] == board[i][j] && NoBlockHorizontal(i, k, j, board)){
+                        console.log(i + ' ' + k + '位置与' + i + ' ' + j + '位置值相等,进行移动');
                         // move
                         ShowMoveAnimation(i, j, i, k);
                         // add
                         board[i][k] += board[i][j];
                         board[i][j] = 0;
 
-                        console.log('k位置与j位置值相等');
+                        console.log('移动完成');
+                        console.log( '此时(i,k)的值为：' + i + ' ' + k );
                         continue;
                     }
-                    // else if(board[i][k] != 0 && board[i][k] != board[i][j]) {
-                    //     // 什么都不做
-                    //     console.log('无法移动到' + k +'位置');
-                    //     continue;
-                    // }
                 }
             }
         }
 
     setTimeout("updateBoardView()", 200); 
+    }
     // updateBoardView();
     return true;
 }
