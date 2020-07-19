@@ -1,216 +1,305 @@
-let score = 0;
-let board = new Array();
+/**
+ * Created by liuyubobobo on 14-4-11.
+ * my site: http://www.liuyubobobo.com
+ */
 
-// window.onload = prepareLinks;
-// function prepareLinks() {
-//     let links = document.querySelectorAll('a');
-//     for(let i = 0; i < links.length; i++){
-//         if(links[i].getAttribute('id') === 'newGameButton') {
-//             links[i].onclick = function() {
-//                 NewGame();
-//             }
-//         }
-//     }
-// }
+var board = new Array();
+let hasConflicted = new Array();
+var score = 0;
 
-$(document).ready(function() {
-    NewGame();
+$(document).ready(function(){
+    newgame();
 });
 
-function NewGame() {
-    // 初始化界面
-    Init();
-    // 随机生成两个数字
-    GenerateOneNumber();
-    GenerateOneNumber();
+function newgame(){
+    //初始化棋盘格
+    init();
+    //在随机两个格子生成数字
+    generateOneNumber();
+    generateOneNumber();
 }
 
+function init(){
+    for( var i = 0 ; i < 4 ; i ++ )
+        for( var j = 0 ; j < 4 ; j ++ ){
 
-function Init() {
-    for(let i = 0; i < 4; i++){
-        for(let j = 0; j < 4; j++){
-            let gridCell = $("#grid-cell-" + i + "-" + j);
-            gridCell.css('top', getPosTop(i, j));
-            gridCell.css('left', getPosLeft(i ,j));
+            var gridCell = $('#grid-cell-'+i+"-"+j);
+            gridCell.css('top', getPosTop( i , j ) );
+            gridCell.css('left', getPosLeft( i , j ) );
         }
-    }
 
-    for(let i = 0; i < 4; i++){
+    for( var i = 0 ; i < 4 ; i ++ ){
         board[i] = new Array();
-        for(let j = 0; j < 4; j++){
+        hasConflicted[i] = new Array();
+        for( var j = 0 ; j < 4 ; j ++ ){
             board[i][j] = 0;
+            hasConflicted[i][j] = false;
         }
     }
 
     updateBoardView();
+    
+    score = 0;
 }
 
-function updateBoardView() {
-      $(".number-cell").remove();
-      for(let i = 0; i < 4; i++)
-          for(let j = 0; j < 4; j++){
-              $("#grid-container").append(' <div class="number-cell" id="number-cell-' + i + '-' + j +'"></div> ');
-              let theNumberCell = $('#number-cell-' + i + '-' + j);
+function updateBoardView(){
 
-              if(board[i][j] == 0){
-                  theNumberCell.css('width', '0px');
-                  theNumberCell.css('height', '0px');
-                  theNumberCell.css('top', getPosTop(i, j) + 50);
-                  theNumberCell.css('left', getPosLeft(i, j) + 50);
-              }
-              else{
-                  theNumberCell.css('width', '100px');
-                  theNumberCell.css('height', '100px');
-                  theNumberCell.css('top', getPosTop(i, j));
-                  theNumberCell.css('ledt', getPosLeft(i, j));
-                  theNumberCell.css('background-color', getNumberBackgroundColor(board[i][j]));
-                  theNumberCell.css('color', getNumberColor(board[i][j]));
-                  theNumberCell.text(board[i][j]);
-              }
-          }   
+    $(".number-cell").remove();
+    for( var i = 0 ; i < 4 ; i ++ )
+        for( var j = 0 ; j < 4 ; j ++ ){
+            $("#grid-container").append( '<div class="number-cell" id="number-cell-'+i+'-'+j+'"></div>' );
+            var theNumberCell = $('#number-cell-'+i+'-'+j);
+
+            if( board[i][j] == 0 ){
+                theNumberCell.css('width','0px');
+                theNumberCell.css('height','0px');
+                theNumberCell.css('top',getPosTop(i,j) + 50 );
+                theNumberCell.css('left',getPosLeft(i,j) + 50 );
+            }
+            else{
+                theNumberCell.css('width','100px');
+                theNumberCell.css('height','100px');
+                theNumberCell.css('top',getPosTop(i,j));
+                theNumberCell.css('left',getPosLeft(i,j));
+                theNumberCell.css('background-color',getNumberBackgroundColor( board[i][j] ) );
+                theNumberCell.css('color',getNumberColor( board[i][j] ) );
+                theNumberCell.text( board[i][j] );
+            }
+
+            hasConflicted[i][j] = false;
+        }
 }
 
-function GenerateOneNumber() {
-    if(NoSpace(board)) {
+function generateOneNumber(){
+
+    if( nospace( board ) )
         return false;
-    }
 
-    // 随机一个位置
-    let random_x = parseInt(Math.floor(Math.random() * 4));
-    let random_y = parseInt(Math.floor(Math.random() * 4));
+    //随机一个位置
+    var randx = parseInt( Math.floor( Math.random()  * 4 ) );
+    var randy = parseInt( Math.floor( Math.random()  * 4 ) );
 
-    while(true) {
-        if(board[random_x][random_y] == 0)
+    let cnt = 0;
+    while( cnt < 50 ){
+        if( board[randx][randy] == 0 )
             break;
-        random_x = parseInt(Math.floor(Math.random() * 4));
-        random_y = parseInt(Math.floor(Math.random() * 4));
+
+        randx = parseInt( Math.floor( Math.random()  * 4 ) );
+        randy = parseInt( Math.floor( Math.random()  * 4 ) );
+        
+        cnt++;
     }
 
-    // 随机一个数字
-    let random_num = Math.random() > 0.5 ? 2 : 4;
+    while( cnt == 50 ) {
+        for( let i = 0; i < 4; i++ ) {
+             for( let j = 0; j < 4; j++ ) {
+                 if( board[i][j] == 0)
+                    randx = i;
+                    randy = j;
+             }
+        }
+    }
+
+    //随机一个数字
+    var randNumber = Math.random() < 0.5 ? 2 : 4;
 
     //在随机位置显示随机数字
-    board[random_x][random_y] = random_num;
-    // console.log(random_x, random_y, random_num);
-    ShowNumberWithAnimation(random_x, random_y, random_num);
-    
-    return true;  
+    board[randx][randy] = randNumber;
+    showNumberWithAnimation( randx , randy , randNumber );
+
+    return true;
 }
 
-$(document).keydown(function(event) {
-    switch(event.keyCode) {
-        case 37: // left
-            if(MoveLeft()) {
-                GenerateOneNumber();
-                IsGameOver();
+$(document).keydown( function( event ){
+    switch( event.keyCode ){
+        case 37: //left
+            if( moveLeft() ){
+                setTimeout("generateOneNumber()",210);
+                setTimeout("isgameover()", 300);
             }
             break;
-        case 38: // up
-            if(MoveUp()) {
-                GenerateOneNumber();
-                IsGameOver();
+        case 38: //up
+            if( moveUp() ){
+                setTimeout("generateOneNumber()",210);
+                setTimeout("isgameover()", 300);
             }
             break;
-        case 39: // right
-            if(MoveRight()) {
-                GenerateOneNumber();
-                IsGameOver();
+        case 39: //right
+            if( moveRight() ){
+                setTimeout("generateOneNumber()",210);
+                setTimeout("isgameover()", 300);
             }
             break;
-        case 38: // down
-            if(MoveDown()) {
-                GenerateOneNumber();
-                IsGameOver();
+        case 40: //down
+            if( moveDown() ){
+                setTimeout("generateOneNumber()",210);
+                setTimeout("isgameover()", 300);
             }
             break;
-        default: 
+        default: //default
             break;
     }
 });
 
-function IsGameOver() {
-
+function isgameover(){
+    if( nospace(board) || nomove(board))
+        gameover();
 }
 
+function gameover() {
+    alert('Game Over !');
+}
 
-function MoveLeft() {
-    if(!CanMoveLeft(board))  
+function moveLeft(){
+
+    if( !canMoveLeft( board ) )
         return false;
 
-    // the real MoveLeft()
-    for(let i = 0; i < 4; i++) 
-        for(let j = 1; j < 4; j++) {
-            if(board[i][j] != 0) {
-
-                for(let k = 0; k < j; k++){
-                    if(board[i][k] == 0 && NoBlockHorizontal(i, k, j, board)){
-                        // move
-                        ShowMoveAnimation(i, j, i, k);
+    //moveLeft
+    for( var i = 0 ; i < 4 ; i ++ )
+        for( var j = 1 ; j < 4 ; j ++ ){
+            if( board[i][j] != 0 ){
+                // console.log('此时找到的位置为' + i + ' ' + j);
+                for( var k = 0 ; k < j ; k ++ ){
+                    if( board[i][k] == 0 && noBlockHorizontal( i , k , j , board ) ){
+                        //move
+                        showMoveAnimation( i , j , i , k );
                         board[i][k] = board[i][j];
                         board[i][j] = 0;
-
-                        console.log('可以移动到'+ i + ' '+ k +'位置');
+                        // console.log('将'+ i + ' ' + j +'移动到' + i + ' ' + k);
+                        // console.log( '此时(i,k)的值为：' + i + ' ' + k );
                         continue;
                     }
-                    else if(board[i][k] == board[i][j] && NoBlockHorizontal(i, k, j, board)){
-                        // move
-                        ShowMoveAnimation(i, j, i, k);
-                        // add
+                    else if( board[i][k] == board[i][j] && noBlockHorizontal( i , k , j , board ) && !hasConflicted[i][k] ){
+                        // console.log(i + ' ' + k + '位置与' + i + ' ' + j + '位置值相等,进行移动');
+                        //move
+                        showMoveAnimation( i , j , i , k );
+                        //add
                         board[i][k] += board[i][j];
                         board[i][j] = 0;
 
-                        console.log('k位置与j位置值相等');
+                        hasConflicted[i][k] = true;
+                        // add score
+                        score += board[i][k];
+                        updateScore(score);
+
+                        // console.log('移动完成');
+                        // console.log( '此时(i,k)的值为：' + i + ' ' + k );
+
                         continue;
                     }
-                    // else if(board[i][k] != 0 && board[i][k] != board[i][j]) {
-                    //     // 什么都不做
-                    //     console.log('无法移动到' + k +'位置');
-                    //     continue;
-                    // }
                 }
             }
         }
 
-    setTimeout("updateBoardView()", 200); 
-    // updateBoardView();
+    setTimeout("updateBoardView()",200);
     return true;
 }
 
-// 来自答案源代码
+function moveRight() {
+    if( !canMoveRight( board ) )   return false;
 
-// function MoveLeft(){
+    for(let i = 0; i < 4; i++) {
+        for( let j = 2; j >= 0; j--) {
+            if( board[i][j] != 0) {
+                for( let k = 3; k > j; k--) {
 
-//     if( !CanMoveLeft( board ) )
-//         return false;
+                    if( board[i][k] == 0 && noBlockHorizontal( i, j, k, board ) ) {
+                        showMoveAnimation( i , j , i , k );
+                        board[i][k] = board[i][j];
+                        board[i][j] = 0;
 
-//     //moveLeft
-//     for( var i = 0 ; i < 4 ; i ++ )
-//         for( var j = 1 ; j < 4 ; j ++ ){
-//             if( board[i][j] != 0 ){
+                        continue;
+                    }
+                    else if( board[i][k] == board[i][j] && noBlockHorizontal( i, j, k, board ) && !hasConflicted[i][k]) {
+                        showMoveAnimation( i , j , i , k );
+                        board[i][k] += board[i][j];
+                        board[i][j] = 0;
 
-//                 for( var k = 0 ; k < j ; k ++ ){
-//                     if( board[i][k] == 0 && NoBlockHorizontal( i , k , j , board ) ){
-//                         //move
-//                         ShowMoveAnimation( i , j , i , k );
-//                         board[i][k] = board[i][j];
-//                         board[i][j] = 0;
-//                         continue;
-//                     }
-//                     else if( board[i][k] == board[i][j] && NoBlockHorizontal( i , k , j , board ) ){
-//                         //move
-//                         ShowMoveAnimation( i , j , i , k );
-//                         //add
-//                         board[i][k] += board[i][j];
-//                         board[i][j] = 0;
+                        hasConflicted[i][k] = true;
+                        // add score
+                        score += board[i][k];
+                        updateScore(score);
 
-//                         continue;
-//                     }
-//                 }
-//             }
-//         }
+                        continue;
+                    }
+                }
+            }
+        }
+    }
 
-//     setTimeout("updateBoardView()",200);
-//     return true;
-// }
+    setTimeout("updateBoardView()", 200);
+    return true;
 
+}
+
+function moveUp() {
+    if( !canMoveUp( board ) )  return false;
+    
+    for( let j = 0; j < 4; j++ ) {
+        for( let i = 1; i < 4; i++ ) {
+            if( board[i][j] != 0) {
+                for( let k = 0; k < i; k++) {
+                    if( board[k][j] == 0 && noBlockVertical(j, i, k, board) ) {
+                        showMoveAnimation(i, j, k, j);
+                        board[k][j] = board[i][j];
+                        board[i][j] = 0;
+                        
+                        continue;
+                    }
+                    else if( board[k][j] == board[i][j] && noBlockVertical(j, i, k, board) && !hasConflicted[k][j] ) {
+                        showMoveAnimation(i, j, k, j);
+                        board[k][j] += board[i][j];
+                        board[i][j] = 0;
+                        
+                        hasConflicted[k][j] = true;
+                        // add score
+                        score += board[i][k];
+                        updateScore(score);
+
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+
+    setTimeout("updateBoardView()", 200);
+    return true;
+}
+
+function moveDown() {
+    if( !canMoveDown( board ) ) return false;
+
+    for( let j = 0; j < 4; j++) {
+        for( let i = 2; i >= 0; i--) {
+            if( board[i][j] != 0 ) {
+                for( let k = 3; k > i; k--) {
+                    if( board[k][j] == 0 && noBlockVertical( j, i, k, board )) {
+                        showMoveAnimation( i, j, k, j );
+                        board[k][j] = board[i][j];
+                        board[i][j] = 0;
+
+                        continue;
+                    }
+                    else if( board[k][j] == board[i][j] && noBlockVertical( j, i, k, board ) && !hasConflicted[k][j]) {
+                        showMoveAnimation(i, j, k, j);
+                        board[k][j] += board[i][j];
+                        board[i][j] = 0;
+
+                        hasConflicted[k][j] = true;
+                        // add score
+                        score += board[i][k];
+                        updateScore(score);
+
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+
+    setTimeout("updateBoardView()", 200);
+    return true;
+}
 
