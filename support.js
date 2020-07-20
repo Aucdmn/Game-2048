@@ -1,13 +1,14 @@
-/**
- * Created by liuyubobobo on 14-4-11.
- * my site: http://www.liuyubobobo.com
- */
+documentWidth = window.screen.availWidth;
+gridContainerWidth = 0.92 * documentWidth;
+cellSideLength = 0.18 * documentWidth;
+cellSpace = 0.04 * documentWidth;
+
 function getPosTop( i , j ){
-    return 20 + i*120;
+    return cellSpace + i*(cellSpace+cellSideLength);
 }
 
 function getPosLeft( i , j ){
-    return 20 + j*120;
+    return cellSpace + j*(cellSpace+cellSideLength);
 }
 
 function getNumberBackgroundColor( number ){
