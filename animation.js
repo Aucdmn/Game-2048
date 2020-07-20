@@ -1,25 +1,33 @@
-function ShowNumberWithAnimation(i, j, random_num) {
+/**
+ * Created by liuyubobobo on 14-4-11.
+ * my site: http://www.liuyubobobo.com
+ */
+function showNumberWithAnimation( i , j , randNumber ){
 
-    let numberCell = $('#number-cell-' + i + '-' + j);
+    var numberCell = $('#number-cell-' + i + "-" + j );
 
-    numberCell.css('background-color', getNumberBackgroundColor(random_num));
-    numberCell.css('color', getNumberColor(random_num));
-    numberCell.text(random_num);
+    numberCell.css('background-color',getNumberBackgroundColor( randNumber ) );
+    numberCell.css('color',getNumberColor( randNumber ) );
+    numberCell.text( randNumber );
 
     numberCell.animate({
-        width: "100px",
-        height: "100px",
-        top: getPosTop(i, j),
-        left: getPosLeft(i, j)
-    }, 50);
-    
+        width: cellSideLength,
+        height: cellSideLength,
+        top:getPosTop( i , j ),
+        left:getPosLeft( i , j )
+    },50);
 }
 
-function ShowMoveAnimation(from_x, from_y, to_x, to_y) {
+function showMoveAnimation( fromx , fromy , tox, toy ){
 
-    let numberCell = $('#number-cell-' + from_x + '-' + from_y);
+    var numberCell = $('#number-cell-' + fromx + '-' + fromy );
     numberCell.animate({
-        top: getPosTop(to_x, to_y),
-        left: getPosLeft(to_x, to_y)
-    }, 200);
+        top:getPosTop( tox , toy ),
+        left:getPosLeft( tox , toy )
+    },200);
+}
+
+function updateScore( score ) {
+    let scoreText = $('#score');
+    scoreText.text( score );
 }
