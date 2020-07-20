@@ -6,15 +6,12 @@
     <title>2048</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
 
-    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script type="text/javascript" src="support.js"></script>
-    <script type="text/javascript" src="animation.js"></script>
-    <script type="text/javascript" src="main.js"></script>
 </head>
 <body>
     <header>
         <h1>2048</h1>
-        <a href="javascript:newgame();" id="newgamebutton">New Game</a>
+        <a id="newgamebutton">New Game</a> 
+        <!-- href="javascript:newgame();" -->
         <p>score : <span id="score">0</span></p>
     </header>
 
@@ -39,5 +36,10 @@
         <div class="grid-cell" id="grid-cell-3-2"></div>
         <div class="grid-cell" id="grid-cell-3-3"></div>
     </div>
+
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script type="text/javascript" src="support.js"></script>
+    <script type="text/javascript" src="animation.js"></script>
+    <script type="text/javascript" src="main.js"></script>
 </body>
 </html>

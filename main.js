@@ -1,4 +1,22 @@
+// 成功实现 html 与 js 结构分离
+window.onload = prepareLinks;
+function prepareLinks() {
+    let links = document.querySelectorAll('a');
+    // console.log(clickNewGameButton);
+    for(let i = 0; i < links.length; i++) {
+        console.log(links[i]);
+        if(links[i].getAttribute('id') == 'newgamebutton') {
+            links[i].onclick = function() {
+                newgame(this.getAttribute('href'));
+                return false;
+            }
+        }
+    }
+}
 
+// clickNewGameButton.addEventListener('onclick', function() {
+//     newgame();
+// })
 
 var board = new Array();
 let hasConflicted = new Array();
