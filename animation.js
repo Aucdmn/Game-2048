@@ -1,7 +1,5 @@
-/**
- * Created by liuyubobobo on 14-4-11.
- * my site: http://www.liuyubobobo.com
- */
+
+
 function showNumberWithAnimation( i , j , randNumber ){
 
     var numberCell = $('#number-cell-' + i + "-" + j );
@@ -28,6 +26,5 @@ function showMoveAnimation( fromx , fromy , tox, toy ){
 }
 
 function updateScore( score ) {
-    let scoreText = $('#score');
-    scoreText.text( score );
+    $('#score').text( score );
 }

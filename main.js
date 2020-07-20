@@ -2,7 +2,12 @@
 
 var board = new Array();
 let hasConflicted = new Array();
-var score = 0;
+let score = 0;
+
+let startx = 0;
+var starty = 0;
+var endx = 0;
+var endy = 0;
 
 $(document).ready(function(){
     prepareForMobile();
@@ -251,11 +256,11 @@ function moveLeft(){
                         //add
                         board[i][k] += board[i][j];
                         board[i][j] = 0;
-
-                        hasConflicted[i][k] = true;
                         // add score
                         score += board[i][k];
                         updateScore(score);
+
+                        hasConflicted[i][k] = true;
 
                         // console.log('移动完成');
                         // console.log( '此时(i,k)的值为：' + i + ' ' + k );
@@ -289,12 +294,12 @@ function moveRight() {
                         showMoveAnimation( i , j , i , k );
                         board[i][k] += board[i][j];
                         board[i][j] = 0;
-
-                        hasConflicted[i][k] = true;
                         // add score
                         score += board[i][k];
                         updateScore(score);
 
+                        hasConflicted[i][k] = true;
+                    
                         continue;
                     }
                 }
@@ -326,11 +331,11 @@ function moveUp() {
                         board[k][j] += board[i][j];
                         board[i][j] = 0;
                         
-                        hasConflicted[k][j] = true;
                         // add score
-                        score += board[i][k];
+                        score += board[k][j];
                         updateScore(score);
 
+                        hasConflicted[k][j] = true;
                         continue;
                     }
                 }
@@ -361,11 +366,12 @@ function moveDown() {
                         board[k][j] += board[i][j];
                         board[i][j] = 0;
 
-                        hasConflicted[k][j] = true;
                         // add score
-                        score += board[i][k];
+                        score += board[k][j];
                         updateScore(score);
 
+                        hasConflicted[k][j] = true;
+                        
                         continue;
                     }
                 }
